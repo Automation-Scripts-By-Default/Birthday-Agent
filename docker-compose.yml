@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  birthday-agent:
+    build: .
+    container_name: birthday-agent
+    env_file:
+      - .env
+    networks:
+      - homelab-network
+    restart: unless-stopped
+    volumes:
+      - ./logs:/var/log # Mount logs directory for easier access
+
+networks:
+  homelab-network:
+    external: true # Uses your existing homelab-network

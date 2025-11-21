@@ -1,0 +1,12 @@
+#--------------------------------------------------
+# Birthday Agent Cron Job
+#--------------------------------------------------
+# Runs daily at 9:00 AM UTC
+# Format: min hour day month dayOfWeek command
+#--------------------------------------------------
+
+# Load environment variables and run the birthday script every day at 9:00 AM
+0 9 * * * cd /app && /usr/local/bin/python main.py >> /var/log/birthday-agent.log 2>&1
+
+# Blank line required at end of cron file
+
