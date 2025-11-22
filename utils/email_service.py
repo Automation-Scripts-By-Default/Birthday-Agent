@@ -17,8 +17,6 @@ if (not EMAIL_USER or not EMAIL_PASSWORD):
 
 
 def send_email(subject: str, body: str, to: str):
-    global EMAIL_USER, EMAIL_PASSWORD
-
     msg = EmailMessage()
     msg.set_content(body)
     msg["Subject"] = subject
