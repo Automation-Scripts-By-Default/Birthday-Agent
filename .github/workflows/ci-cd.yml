@@ -21,23 +21,34 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for version detection
 
+      - name: Set up Python 3.12
+        run: |
+          # Check if python3 is available
+          if command -v python3 &> /dev/null; then
+            echo "Python3 found"
+            python3 --version
+          else
+            echo "Python3 not found, please install it on the runner"
+            exit 1
+          fi
+
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          python3 -m pip install --upgrade pip
+          python3 -m pip install flake8 pytest
+          if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt; fi
 
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.venv,venv
+          python3 -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.venv,venv
           # exit-zero treats all errors as warnings
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --exclude=.venv,venv
+          python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --exclude=.venv,venv
 
       - name: Syntax check Python files
         run: |
-          python -m py_compile main.py
-          python -m py_compile utils/*.py || true
+          python3 -m py_compile main.py
+          python3 -m py_compile utils/*.py || true
 
   version:
     name: Determine Version

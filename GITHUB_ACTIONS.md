@@ -1,5 +1,61 @@
 # GitHub Actions CI/CD Setup Guide
 
+## Prerequisites
+
+### Self-Hosted Runner Requirements
+
+Your self-hosted runner needs these tools installed:
+
+#### Quick Setup (Automated)
+
+```bash
+# On your Docker VM (where the runner is installed)
+cd /path/to/Birthday-Agent
+chmod +x setup-runner.sh
+./setup-runner.sh
+```
+
+#### Manual Setup
+
+```bash
+# Update packages
+sudo apt-get update
+
+# Install Python 3
+sudo apt-get install -y python3 python3-pip python3-venv
+
+# Install Docker (if not installed)
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Install Docker Compose
+sudo apt-get install -y docker-compose
+
+# Install Git
+sudo apt-get install -y git
+
+# Verify installations
+python3 --version
+docker --version
+git --version
+```
+
+#### Important: Docker Permissions
+
+Ensure your runner user can access Docker without sudo:
+
+```bash
+# Add runner user to docker group
+sudo usermod -aG docker $(whoami)
+
+# Apply changes (logout/login or run)
+newgrp docker
+
+# Test
+docker ps
+```
+
 ## Overview
 
 This CI/CD pipeline automatically:
