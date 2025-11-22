@@ -1,2 +1,2 @@
 # Birthday-Agent
-Automate birthday messages
+Automate birthday messages.
