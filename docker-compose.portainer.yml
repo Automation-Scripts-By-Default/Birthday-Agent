@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  birthday-agent:
+    image: lucasdadev/homelab:birthday-agent-latest
+    container_name: birthday-agent
+    environment:
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_APP_PASSWORD=${EMAIL_APP_PASSWORD}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_API_KEY_SID=${TWILIO_API_KEY_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_API_KEY_SECRET=${TWILIO_API_KEY_SECRET}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+    networks:
+      - homelab-network
+    restart: unless-stopped
+    volumes:
+      - /opt/Birthday-Agent/logs:/var/log
+
+networks:
+  homelab-network:
+    external: true
