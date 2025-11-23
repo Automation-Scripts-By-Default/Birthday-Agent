@@ -13,6 +13,9 @@ permissions:
 env:
   DOCKER_HUB_REPO: lucasdadev/homelab
   IMAGE_NAME: birthday-agent
+  STACK_ID: 8
+  ENDPOINT_ID: 3
+  PORTAINER_URL: http://192.168.2.185:9000
 
 jobs:
   test:
@@ -170,6 +173,34 @@ jobs:
     if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Portainer
+        id: portainer_auth
+        run: |
+          TOKEN=$(curl -s -X POST "$PORTAINER_URL/api/auth" \
+            -H "Content-Type: application/json" \
+            -d "{\"username\":\"${{ secrets.PORTAINER_USERNAME }}\",\"password\":\"${{ secrets.PORTAINER_PASSWORD }}\"}" \
+            | jq -r '.jwt')
+          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
+
+      - name: Redeploy Portainer Stack
+        run: |
+          echo "Using stack ID: ${STACK_ID}"
+          echo "Using endpoint ID: ${ENDPOINT_ID}"
+          echo "Redeploying via Portainer CE API..."
+          PAYLOAD=$(jq -Rs '.' docker-compose.yml)
+          
+          curl -s -X PUT "$PORTAINER_URL/api/stacks/${STACK_ID}?endpointId=${ENDPOINT_ID}" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"StackFileContent\": $PAYLOAD, \"Prune\": true}" \
+            -o response.json
+
+          echo "Portainer response:"
+          cat response.json
+
       - name: Summary
         run: |
           echo "## 🎉 Build Complete!" >> $GITHUB_STEP_SUMMARY
