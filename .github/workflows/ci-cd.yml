@@ -133,13 +133,15 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: birthday-agent:latest
+          tags: |
+            ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-${{ needs.version.outputs.version }}
+            ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Image digest
-        run: echo "Image pushed with tags - ${{ needs.version.outputs.version }} and latest"
+        run: echo "Image pushed with tags - ${{ env.IMAGE_NAME }}-${{ needs.version.outputs.version }} and ${{ env.IMAGE_NAME }}-latest"
 
   tag-release:
     name: Create Git Tag
@@ -175,12 +177,10 @@ jobs:
           echo "**Version:** ${{ needs.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Docker Images:**" >> $GITHUB_STEP_SUMMARY
-          echo "- \`${{ env.DOCKER_HUB_REPO }}:${{ needs.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- \`${{ env.DOCKER_HUB_REPO }}:latest\`" >> $GITHUB_STEP_SUMMARY
           echo "- \`${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-${{ needs.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- \`${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-latest\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Pull command:**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "docker pull ${{ env.DOCKER_HUB_REPO }}:${{ needs.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-latest" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
