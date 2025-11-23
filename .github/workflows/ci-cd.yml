@@ -133,11 +133,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ${{ env.DOCKER_HUB_REPO }}:${{ needs.version.outputs.version }}
-            ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-${{ needs.version.outputs.version }}
-            ${{ env.DOCKER_HUB_REPO }}:${{ env.IMAGE_NAME }}-latest
-            ${{ env.DOCKER_HUB_REPO }}:latest
+          tags: birthday-agent:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

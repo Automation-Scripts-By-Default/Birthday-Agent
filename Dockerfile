@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     libmariadb-dev \
     cron \
     gcc \
+    nano \
+    vim \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the requirements file into the container
