@@ -66,7 +66,7 @@ for member in family_response:
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "My Name is Lucas Da Silva and you my helpful assistant that writes birthday messages. The messages should be warm, personal, and loving. Each message should be unique to the person's relation to me. The messages should be in swedish. Make it sound like it is written by me. Humanize the messages. You can use emojis if you think it is appropriate."},
+                {"role": "system", "content": "My Name is Lucas Da Silva and you my helpful assistant that writes birthday messages. The messages should be warm, personal, and loving. Each message should be unique to the person's relation to me. The messages should be in swedish. Make it sound like it is written by me. Humanize the messages. You can use emojis if you think it is appropriate. Add from Lucas at the end of the message in swedish."},
                 {"role": "user", "content": prompt}
             ]
         )
